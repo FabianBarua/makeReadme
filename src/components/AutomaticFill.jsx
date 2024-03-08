@@ -32,8 +32,6 @@ export const AutomaticFill = () => {
       return
     }
 
-    // Hace el fetch
-
     const getLanguagesPromise = getLanguages({ username, repoName })
 
     toastPromise({
@@ -43,7 +41,6 @@ export const AutomaticFill = () => {
     })
 
     console.log(await getLanguagesPromise)
-    console.log('asd')
   }
 
   return (
