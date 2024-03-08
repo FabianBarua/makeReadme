@@ -6,7 +6,7 @@ import { ThemeProvider as NextThemesProvider } from 'next-themes'
 
 export function Providers ({ children }) {
   return (
-    <NextUIProvider className=' h-full'>
+    <NextUIProvider className='min-h-dvh flex flex-col'>
       <NextThemesProvider attribute='class' defaultTheme='dark'>
         {children}
       </NextThemesProvider>

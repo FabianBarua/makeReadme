@@ -11,18 +11,11 @@ export function toastError ({ text }) {
 
 export function toastPromise ({ success, error, loading, promise }) {
   return toast.promise(
-    promise
-      .then(response => {
-        if (response.ok) {
-          return response.json()
-        } else {
-          throw new Error('Network response was not ok.')
-        }
-      }),
+    promise,
     {
       loading,
       success,
-      error
+      error: error || ((err) => `${err.message}`)
     },
     {
       className

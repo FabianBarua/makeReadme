@@ -2,7 +2,8 @@ import { Input, Tooltip, Button } from '@nextui-org/react'
 import { useMemo, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { toastError, toastPromise } from './Toast'
-import { validateGitHubRepoLink } from './../logic/validateGitUrl'
+import { matchUserAndRepo, validateGitHubRepoLink } from './../logic/validateGitUrl'
+import { getLanguages } from './../services/github'
 
 export const AutomaticFill = () => {
   const [value, setValue] = useState('')
@@ -21,43 +22,28 @@ export const AutomaticFill = () => {
     return !validateGitHubRepoLink(value)
   }, [value])
 
-  async function getRepoLanguages (username, repoName) {
-    const url = `https://api.github.com/repos/${username}/${repoName}/languages`
-
-    const resp = await toastPromise({
-      promise: fetch(url),
-      loading: 'Fetching languages...',
-      success: 'Languages fetched successfully!',
-      error: 'Error in fetching languages.'
-    })
-
-    if (resp instanceof Error) {
-      console.error('Error:', resp.message)
-    } else {
-      console.log('Response:', resp)
-    }
-  }
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    if (value === '') {
-      toastError({ text: 'Ingresa la url del repositorio.' })
-      return
-    }
-    if (isInvalid) {
+
+    const [username, repoName] = matchUserAndRepo({ url: value })
+
+    if (!validateGitHubRepoLink(value) & !username && !repoName) {
       toastError({ text: 'Ingresa una url correcta.' })
       return
     }
 
-    const matchResult = value.match(/github\.com\/([^/]+)\/([^/]+)/)
-    const username = matchResult && matchResult[1]
-    const repoName = matchResult && matchResult[2]
+    // Hace el fetch
 
-    if (username && repoName) {
-      getRepoLanguages(username, repoName)
-    } else {
-      toastError({ text: 'Hubo un error.' })
-    }
+    const getLanguagesPromise = getLanguages({ username, repoName })
+
+    toastPromise({
+      promise: getLanguagesPromise,
+      loading: 'Extrayendo datos...',
+      success: 'Datos extraídos!'
+    })
+
+    console.log(await getLanguagesPromise)
+    console.log('asd')
   }
 
   return (
@@ -84,7 +70,7 @@ export const AutomaticFill = () => {
         size='xs'
       />
       <Tooltip
-        delay={1000}
+        delay={500}
         color='warning'
         content={
           <div className='px-1 py-2  w-56 '>

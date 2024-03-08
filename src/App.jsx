@@ -21,9 +21,10 @@ function App () {
         </NavbarContent>
       </Navbar>
 
-      <main className=' py-6 px-11 '>
+      <main className=' py-6 px-11 flex-1'>
         <section className=' w-72'>
           <AutomaticFill />
+
         </section>
       </main>
     </>
