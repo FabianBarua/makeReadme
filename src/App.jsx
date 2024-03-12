@@ -6,7 +6,6 @@ import { AutomaticFill } from './components/AutomaticFill'
 import { TechnologySelect } from './components/TechnologySelect'
 
 function App () {
-  console.log('render')
   return (
     <>
       <Navbar className='border-b-1 border-divider'>
