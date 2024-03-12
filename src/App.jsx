@@ -3,6 +3,7 @@ import { ThemeSwitcher } from './components/Switch'
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from '@nextui-org/react'
 import { GitLink } from './components/GitLink'
 import { AutomaticFill } from './components/AutomaticFill'
+import { LanguageSelect } from './components/LanguageSelect'
 
 function App () {
   return (
@@ -21,10 +22,10 @@ function App () {
         </NavbarContent>
       </Navbar>
 
-      <main className=' py-6 px-11 flex-1'>
-        <section className=' w-72'>
+      <main className=' py-6 px-11 flex-1 flex'>
+        <section className=' max-w-72 flex  gap-2 flex-col flex-1 '>
           <AutomaticFill />
-
+          <LanguageSelect />
         </section>
       </main>
     </>
