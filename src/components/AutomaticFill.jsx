@@ -78,7 +78,7 @@ export const AutomaticFill = () => {
         placement='right'
         showArrow
       >
-        <Button variant='ghost' type='submit'>
+        <Button variant='ghost' className='text-sm' type='submit'>
           Extraer
         </Button>
       </Tooltip>

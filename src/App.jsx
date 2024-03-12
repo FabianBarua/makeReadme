@@ -3,9 +3,10 @@ import { ThemeSwitcher } from './components/Switch'
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from '@nextui-org/react'
 import { GitLink } from './components/GitLink'
 import { AutomaticFill } from './components/AutomaticFill'
-import { LanguageSelect } from './components/LanguageSelect'
+import { TechnologySelect } from './components/TechnologySelect'
 
 function App () {
+  console.log('render')
   return (
     <>
       <Navbar className='border-b-1 border-divider'>
@@ -25,7 +26,7 @@ function App () {
       <main className=' py-6 px-11 flex-1 flex'>
         <section className=' max-w-72 flex  gap-2 flex-col flex-1 '>
           <AutomaticFill />
-          <LanguageSelect />
+          <TechnologySelect />
         </section>
       </main>
     </>
