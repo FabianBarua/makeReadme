@@ -3,12 +3,15 @@
 
 import { NextUIProvider } from '@nextui-org/react'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
+import { ReadmeProvider } from '../context/readme'
 
 export function Providers ({ children }) {
   return (
     <NextUIProvider className='min-h-dvh flex flex-col'>
       <NextThemesProvider attribute='class' defaultTheme='dark'>
-        {children}
+        <ReadmeProvider>
+          {children}
+        </ReadmeProvider>
       </NextThemesProvider>
     </NextUIProvider>
   )

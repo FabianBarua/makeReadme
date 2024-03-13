@@ -1,19 +1,20 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, ScrollShadow } from '@nextui-org/react'
 import { NoResults } from './NoResults'
 import { useDebouncedCallback } from 'use-debounce'
+import { ReadmeContext } from './../context/readme'
 
-export const SearchTechnology = ({ isOpen, onOpenChange, technologies, technologiesSelected, setTechnologiesSelected }) => {
+export const SearchTechnology = ({ isOpen, onOpenChange, technologies }) => {
   const inputRef = useRef(null)
 
-  const handleToggleTechnology = (id, selected) => {
+  const { readme: { selectedTechnologies }, addSelectedTechnologies, deleteSelectedTechnologies } = useContext(ReadmeContext)
+
+  const handleToggleTechnology = (technology, selected) => {
     if (selected) {
-      const updatedTechnologies = technologiesSelected.filter((tech) => tech.id !== id)
-      setTechnologiesSelected(updatedTechnologies)
+      deleteSelectedTechnologies(technology.id)
     } else {
-      const selectedTech = technologies.find((tech) => tech.id === id)
-      setTechnologiesSelected([...technologiesSelected, selectedTech])
+      addSelectedTechnologies(technology)
     }
     inputRef.current.focus()
   }
@@ -27,11 +28,13 @@ export const SearchTechnology = ({ isOpen, onOpenChange, technologies, technolog
 
   const [param, setParam] = useState('')
 
-  const filteredTechnologies = technologies.filter((item) =>
+  useEffect(() => {
+    if (param !== '') { setParam('') }
+  }, [onOpenChange])
+
+  const filteredTechnologies = [...technologies].filter((item) =>
     item.title.toLowerCase().includes(param.toLowerCase())
   )
-
-  useEffect(() => { setParam('') }, [onOpenChange])
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop='blur'>
@@ -50,7 +53,7 @@ export const SearchTechnology = ({ isOpen, onOpenChange, technologies, technolog
               <ScrollShadow hideScrollBar className='w-full h-full flex flex-col gap-2'>
                 {filteredTechnologies.length > 0
                   ? filteredTechnologies.map((item) => {
-                    const selected = technologiesSelected.some((tech) => tech.id === item.id)
+                    const selected = selectedTechnologies.some((tech) => tech.id === item.id)
                     return (
                       <div
                         key={item.id}
@@ -61,7 +64,7 @@ export const SearchTechnology = ({ isOpen, onOpenChange, technologies, technolog
                           size='sm'
                           variant='flat'
                           color={selected ? 'danger' : 'default'}
-                          onClick={() => handleToggleTechnology(item.id, selected)}
+                          onClick={() => handleToggleTechnology(item, selected)}
                         >
                           {selected ? 'Remove' : 'Add'}
                         </Button>
